@@ -1,4 +1,4 @@
-json
 requests
 streamlit_ext
+streamlit
 lxml
