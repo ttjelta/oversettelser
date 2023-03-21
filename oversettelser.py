@@ -58,6 +58,7 @@ if searchurl is not None:
 
     st.markdown("""---""")
     if (n > 0):
+        st.write("{} utgivelser funnet.".format(n))
         ste.download_button('Last ned MODS XML', xmldoc,
                     file_name=navn.replace(' ', '').replace(',', '_') + '.xml')
     else:
