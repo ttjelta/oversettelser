@@ -57,3 +57,5 @@ st.markdown("""---""")
 if (len(xmldoc) > 70):
     ste.download_button('Last ned MODS XML', xmldoc,
                    file_name=navn.replace(' ', '').replace(',', '_') + '.xml')
+else:
+    st.write("Beklager, ingen utgivelser funnet.")
