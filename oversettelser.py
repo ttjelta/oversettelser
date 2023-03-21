@@ -11,7 +11,7 @@ navn = st.text_input("*Oversetter (Etternavn, Fornavn):*")
 xmldoc = '''<modsCollection xmlns="http://www.loc.gov/mods/v3">
 '''
 
-SEARCHAPI = 'https://api.nb.no/catalog/v1/items?q=namecreators:{s}&searchType=FIELD_RESTRICTED_SEARCH&filter=bibliography:Norbok&size={ant}';
+SEARCHAPI = 'https://api.nb.no/catalog/v1/items?q=namecreators:{s}&searchType=FIELD_RESTRICTED_SEARCH&filter=bibliography:Norbok&sort=date&size={ant}';
 ns = {"mods": "http://www.loc.gov/mods/v3"}
 
 searchurl = SEARCHAPI.format(s=navn, ant=50) if navn else None
