@@ -11,7 +11,7 @@ navn = st.text_input("*Oversetter (Etternavn, Fornavn):*")
 xmldoc = '''<modsCollection xmlns="http://www.loc.gov/mods/v3">
 '''
 
-SEARCHAPI = 'https://api.nb.no/catalog/v1/items?q=namecreators:{s}&searchType=FIELD_RESTRICTED_SEARCH&filter=bibliography:Norbok&sort=date&size={ant}';
+SEARCHAPI = 'https://api.nb.no/catalog/v1/items?q=namecreators:{s}&searchType=FIELD_RESTRICTED_SEARCH&filter=mediatype:bøker&sort=date&size={ant}'
 ns = {"mods": "http://www.loc.gov/mods/v3"}
 
 searchurl = SEARCHAPI.format(s=navn, ant=50) if navn else None
@@ -33,10 +33,11 @@ if searchurl is not None:
                         res = requests.get(modsurl)
                         if res.status_code == 200:
                             mods = etree.fromstring(res.content)
-                            
-                            navnfunn = mods.xpath("mods:name[mods:namePart[contains(text(), '" + navn + "')] and mods:role/mods:roleTerm='trl']",
+                            norbok = mods.find(
+                                "mods:relatedItem/mods:titleInfo[mods:title='Norbok']", ns)
+                            navnfunn = mods.xpath("mods:name[mods:namePart[contains(translate(., 'ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅ', 'abcdefghijklmnopqrstuvwxyzæøå'), '" + navn.lower() + "')] and mods:role/mods:roleTerm='trl']",
                                                 namespaces=ns)
-                            if len(navnfunn) > 0:
+                            if norbok != None and len(navnfunn) > 0:
                                 forfatterlist = mods.xpath("mods:name[not(mods:role/mods:roleTerm='trl')]/mods:namePart/text()", namespaces=ns)
                                 forfatter = forfatterlist[0] if len(forfatterlist) > 0 else ""
                                 aarlist = mods.xpath("mods:originInfo/mods:dateIssued/text()", namespaces=ns)
